@@ -18,19 +18,21 @@ CloudFormation do
   }
   
   bucket_policy = {
-    Sid: "jcasc-vpce",
-    Effect: "Allow",
-    Principal: "*",
-    Action: [
-      "s3:GetObject",
-      "s3:PutObject"
-    ],
-    Resource: "arn:aws:s3:::${Bucket}/*",
-    Condition: {
-      StringLike: {
-        "aws:sourceVpce" => "${VPCEndpointId}"
+    Statement: [{
+      Sid: "jcasc-vpce",
+      Effect: "Allow",
+      Principal: "*",
+      Action: [
+        "s3:GetObject",
+        "s3:PutObject"
+      ],
+      Resource: "arn:aws:s3:::${Bucket}/*",
+      Condition: {
+        StringLike: {
+          "aws:sourceVpce" => "${VPCEndpointId}"
+        }
       }
-    }
+    }]
   }
   
   S3_BucketPolicy(:Policy) {
