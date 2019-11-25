@@ -117,6 +117,50 @@ CloudFormation do
     })
   }
   
+  IAM_Role(:TriggerRole) {
+    Path '/'
+    AssumeRolePolicyDocument service_role_assume_policy('events')
+    Policies([
+      iam_policy_allow(
+        'CloudWatchEventPolicy',
+        %w(codebuild:StartBuild),
+        FnGetAtt(:Build, :Arn))
+    ])
+  }
+  
+  Events_Rule(:Trigger) {
+    EventPattern({
+      source: [
+        'aws.codecommit'
+      ],
+      'detail-type': [
+        'CodeCommit Repository State Change'
+      ],
+      resources: [ 
+        FnSub("arn:aws:codecommit:${AWS::Region}:${AWS::AccountId}:${Repository}") 
+      ],
+      detail: {
+        event: [
+          'referenceCreated',
+          'referenceUpdated'
+        ],
+        referenceType: [
+          'branch'
+        ],
+        referenceName: [
+          'master'
+        ]
+      }
+    })
+    Targets([
+        {
+          Arn: FnSub("arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:${Build}"),
+          RoleArn: FnGetAtt(:TriggerRole, :Arn),
+          Id: 'jcasc-codebuild-trigger'
+        }
+    ])
+  }
+  
   Output(:FileLocation) {
     Value FnSub("https://s3-${AWS::Region}.amazonaws.com/${Bucket}/${EnvironmentName}/jenkins.yaml")
   }
