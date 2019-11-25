@@ -79,7 +79,7 @@ CloudFormation do
     Source({
       Type: 'CODECOMMIT',
       Location: FnGetAtt(:Repository, :CloneUrlHttp),
-      BuildSpec: YAML.dump(YAML.load_file('buildspec.yaml'))
+      BuildSpec: buildspec.to_yaml
     })
     Environment({
       ComputeType: 'BUILD_GENERAL1_SMALL',
