@@ -59,12 +59,12 @@ CloudFormation do
   
   CodeCommit_Repository(:Repository) {
     RepositoryDescription 'Jenkins configuration as code plugin source'
-    RepositoryName FnSub("${EnvironmentName}-ciinabox-jcasc")
+    RepositoryName FnSub("${EnvironmentName}-jcasc")
     Tags jcasc_tags
   }
   
   CodeBuild_Project(:Build) {
-    Name FnSub("${EnvironmentName}-ciinabox-jcasc-validation")
+    Name FnSub("${EnvironmentName}-jcasc")
     Description FnSub("Validation and update of Jenkins CasC yaml")
     ServiceRole Ref(:CodeBuildRole)
     LogsConfig({
@@ -137,7 +137,7 @@ CloudFormation do
         'CodeCommit Repository State Change'
       ],
       resources: [ 
-        FnSub("arn:aws:codecommit:${AWS::Region}:${AWS::AccountId}:${Repository}") 
+        FnSub("arn:aws:codecommit:${AWS::Region}:${AWS::AccountId}:${EnvironmentName}-jcasc") 
       ],
       detail: {
         event: [
