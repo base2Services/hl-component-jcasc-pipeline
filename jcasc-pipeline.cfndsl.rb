@@ -154,7 +154,7 @@ CloudFormation do
     })
     Targets([
         {
-          Arn: FnSub("arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:${Build}"),
+          Arn: FnSub("arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/${Build}"),
           RoleArn: FnGetAtt(:TriggerRole, :Arn),
           Id: 'jcasc-codebuild-trigger'
         }
