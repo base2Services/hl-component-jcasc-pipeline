@@ -98,7 +98,7 @@ CloudFormation do
         },
         {
           Name: 'JENKINS_URL',
-          Value: Ref(:JenkinsUrl)
+          Value: FnSub("${JenkinsUrl}")
         },
         {
           Name: 'JENKINS_API_USER',
@@ -162,7 +162,7 @@ CloudFormation do
   }
   
   Output(:FileLocation) {
-    Value FnSub("https://s3-${AWS::Region}.amazonaws.com/${Bucket}/${EnvironmentName}/jenkins.yaml")
+    Value FnSub("https://${Bucket}.s3.amazonaws.com/${EnvironmentName}/jenkins.yaml")
   }
   
 end
