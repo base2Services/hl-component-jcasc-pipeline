@@ -35,7 +35,7 @@ iam_policies:
     action:
       - codecommit:GitPull
     resource:
-      - Fn:GetAtt: Repository.Arn
+      - Fn::GetAtt: Repository.Arn
   vpc-access:
     action:
       - ec2:CreateNetworkInterface
