@@ -31,6 +31,11 @@ iam_policies:
       - s3:GetBucketLocation
     resource:
       - Fn::Sub: arn:aws:s3:::${Bucket}
+  git-pull:
+    action:
+      - codecommit:GitPull
+    resource:
+      - Fn:GetAtt: Repository.Arn
   vpc-access:
     action:
       - ec2:CreateNetworkInterface
@@ -40,3 +45,4 @@ iam_policies:
       - ec2:DescribeSubnets
       - ec2:DescribeSecurityGroups
       - ec2:DescribeVpcs
+      - ec2:CreateNetworkInterfacePermission
