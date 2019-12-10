@@ -13,7 +13,14 @@ buildspec:
         - aws s3 cp jenkins.yaml s3://${BUCKET}/${ENVIRONMENT_NAME}/jenkins.yaml
         - curl -X POST -u $JENKINS_API_USER:$JENKINS_API_PASSWORD "${JENKINS_URL}/configuration-as-code/reload"
 
-iam_policies:
+trigger_iam_policies:
+  CloudWatchEventPolicy:
+    action:
+      - codebuild:StartBuild
+    resource:
+      - Fn::GetAtt: [Build,Arn]
+
+codebuild_iam_policies:
   logs:
     action:
       - logs:CreateLogStream
@@ -46,3 +53,8 @@ iam_policies:
       - ec2:DescribeSecurityGroups
       - ec2:DescribeVpcs
       - ec2:CreateNetworkInterfacePermission
+  secret-manager:
+    action:
+      - secretsmanager:GetSecretValue
+    resource:
+      - Ref: JenkinsSecret

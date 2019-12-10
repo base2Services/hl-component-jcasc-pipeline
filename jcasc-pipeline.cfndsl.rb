@@ -8,12 +8,8 @@ CloudFormation do
   jcasc_tags.push({ Key: 'EnvironmentType', Value: Ref(:EnvironmentType) })
   jcasc_tags.push(*tags.map {|k,v| {Key: k, Value: FnSub(v)}}).uniq { |h| h[:Key] } if defined? tags
   
-  policies = []
-  iam_policies.each do |name,policy|
-    policies << iam_policy_allow(name,policy['action'],policy['resource'] || '*')
-  end if defined? iam_policies
-  
   S3_Bucket(:Bucket) {
+    DeletionPolicy 'Retain'
     BucketName FnSub(bucket_name)
   }
   
@@ -42,8 +38,8 @@ CloudFormation do
   
   IAM_Role(:CodeBuildRole) {
     Path '/'
-    AssumeRolePolicyDocument service_role_assume_policy('codebuild')
-    Policies policies
+    AssumeRolePolicyDocument service_assume_role_policy('codebuild')
+    Policies iam_role_policies(codebuild_iam_policies)
   }
   
   Logs_LogGroup(:Logs) {
@@ -102,13 +98,12 @@ CloudFormation do
         },
         {
           Name: 'JENKINS_API_USER',
-          Value: FnSub("/${EnvironmentName}/jenkins/username"),
-          Type: 'PARAMETER_STORE'
+          Value: 'admin',
         },
         {
           Name: 'JENKINS_API_PASSWORD',
-          Value: FnSub("/${EnvironmentName}/jenkins/password"),
-          Type: 'PARAMETER_STORE'
+          Value: FnSub("/${EnvironmentName}/jenkins/admin/password"),
+          Type: 'SECRETS_MANAGER'
         }
       ]
     })
@@ -119,13 +114,8 @@ CloudFormation do
   
   IAM_Role(:TriggerRole) {
     Path '/'
-    AssumeRolePolicyDocument service_role_assume_policy('events')
-    Policies([
-      iam_policy_allow(
-        'CloudWatchEventPolicy',
-        %w(codebuild:StartBuild),
-        FnGetAtt(:Build, :Arn))
-    ])
+    AssumeRolePolicyDocument service_assume_role_policy('events')
+    Policies iam_role_policies(trigger_iam_policies)
   }
   
   Events_Rule(:Trigger) {
@@ -159,6 +149,20 @@ CloudFormation do
           Id: 'jcasc-codebuild-trigger'
         }
     ])
+  }
+  
+  SecretsManager_Secret(:JenkinsSecret) {
+    Description FnSub("${EnvironmentName} Jenkins auto generated admin password")
+    GenerateSecretString ({
+      ExcludePunctuation: true,
+      PasswordLength: 32
+    })
+    Name FnSub("/${EnvironmentName}/jenkins/admin/password")
+    Tags jcasc_tags
+  }
+  
+  Output(:JenkinsSecret) {
+    Value Ref(:JenkinsSecret)
   }
   
   Output(:FileLocation) {

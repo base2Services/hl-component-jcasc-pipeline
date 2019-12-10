@@ -2,6 +2,8 @@ CfhighlanderTemplate do
   Name 'jcasc-pipeline'
   Description "jcasc-pipeline - #{component_version}"
 
+  DependsOn 'lib-iam@0.1.0'
+
   Parameters do
     ComponentParam 'EnvironmentName', 'dev', isGlobal: true
     ComponentParam 'EnvironmentType', 'development', allowedValues: ['development','production'], isGlobal: true
