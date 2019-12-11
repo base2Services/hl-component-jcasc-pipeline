@@ -81,7 +81,7 @@ CloudFormation do
     })
     Environment({
       ComputeType: 'BUILD_GENERAL1_SMALL',
-      Image: 'python:3.7-alpine',
+      Image: 'aws/codebuild/amazonlinux2-x86_64-standard:2.0',
       Type: 'LINUX_CONTAINER',
       EnvironmentVariables: [
         {

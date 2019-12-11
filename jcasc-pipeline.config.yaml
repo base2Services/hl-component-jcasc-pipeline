@@ -4,9 +4,11 @@ buildspec:
   version: 0.2
   phases:
     install:
+      install:
+        runtime-versions:
+          python: 3.7
       commands:
-        - apk add curl
-        - pip install --user yamllint awscli
+        - pip install --user yamllint
     build:
       commands:
         - yamllint jenkins.yaml
