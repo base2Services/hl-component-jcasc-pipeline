@@ -83,6 +83,7 @@ CloudFormation do
       ComputeType: 'BUILD_GENERAL1_SMALL',
       Image: 'aws/codebuild/amazonlinux2-x86_64-standard:2.0',
       Type: 'LINUX_CONTAINER',
+      ImagePullCredentialsType: 'CODEBUILD',
       EnvironmentVariables: [
         {
           Name: 'BUCKET',
