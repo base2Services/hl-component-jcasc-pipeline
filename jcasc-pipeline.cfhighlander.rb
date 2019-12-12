@@ -13,5 +13,6 @@ CfhighlanderTemplate do
     ComponentParam 'JenkinsUrl'
   end
 
-
+  LambdaFunctions 'repository_seeder_custom_resources'
+  
 end

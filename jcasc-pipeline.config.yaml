@@ -59,3 +59,24 @@ codebuild_iam_policies:
       - secretsmanager:GetSecretValue
     resource:
       - Ref: JenkinsSecret
+      
+repository_seeder_custom_resources:
+  custom_policies:
+    codecommit:
+      action:
+        - codecommit:CreateCommit
+      resource:
+        - Fn::GetAtt: [Repository,Arn]
+  roles:
+    RepositorySeederCustomResource:
+      policies_inline:
+        - cloudwatch-logs
+        - codecommit
+  functions:
+    RepositorySeederCR:
+      code: repository-seeder
+      handler: app.lambda_handler
+      runtime: python3.7
+      timeout: 5
+      role: RepositorySeederCustomResource
+      package_cmd: 'pip install -r requirements.txt -t .'

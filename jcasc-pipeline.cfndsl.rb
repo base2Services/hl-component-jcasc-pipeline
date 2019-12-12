@@ -166,6 +166,12 @@ CloudFormation do
     Value Ref(:JenkinsSecret)
   }
   
+  Resource(:SeedRepository) {
+    Type "Custom::SeedRepository"
+    Property('ServiceToken', FnGetAtt(:RepositorySeederCR, :Arn))
+    Property('RepositoryName', FnGetAtt(:Repository, :Name))
+  }
+  
   Output(:FileLocation) {
     Value FnSub("https://s3-${AWS::Region}.amazonaws.com/${Bucket}/${EnvironmentName}/jenkins.yaml")
   }
