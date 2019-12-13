@@ -13,14 +13,14 @@ FILES = [
 @helper.create
 def create(event, context):
     logger.info(f"Creating resource {event}")    
-    create_event(event)
-    return event['ResourceProperties']['Name']
+    commit_default_jcacs(event)
+    return event['ResourceProperties']['RepositoryName']
 
 
 @helper.update
 def update(event, context):
     logger.info(f"Updating resource {event}")
-    return event['ResourceProperties']['Name']
+    return event['ResourceProperties']['RepositoryName']
 
 
 @helper.delete
