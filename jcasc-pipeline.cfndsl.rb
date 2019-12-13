@@ -167,6 +167,7 @@ CloudFormation do
   }
   
   Resource(:SeedRepository) {
+    DependsOn [:Build,:Trigger]
     Type "Custom::SeedRepository"
     Property('ServiceToken', FnGetAtt(:RepositorySeederCR, :Arn))
     Property('RepositoryName', FnGetAtt(:Repository, :Name))
