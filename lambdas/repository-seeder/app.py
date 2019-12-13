@@ -53,5 +53,5 @@ def load_files():
             })
     return put_files
 
-def handler(event, context):
+def lambda_handler(event, context):
     helper(event, context)
