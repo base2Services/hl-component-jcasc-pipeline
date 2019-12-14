@@ -10,7 +10,7 @@ buildspec:
         - pip install --user yamllint
     build:
       commands:
-        - yamllint -d relaxed jenkins.yaml
+        - "yamllint -d '{extends: default, rules: {indentation: {indent-sequences: false},line-length: {allow-non-breakable-inline-mappings: true}}}' jenkins.yaml"
         - aws s3 cp jenkins.yaml s3://${BUCKET}/${ENVIRONMENT_NAME}/jenkins.yaml
         - curl -X POST -u $JENKINS_API_USER:$JENKINS_API_PASSWORD "${JENKINS_URL}/configuration-as-code/reload"
 

@@ -11,6 +11,7 @@ CfhighlanderTemplate do
     ComponentParam 'VPCEndpointId'
     ComponentParam 'SubnetIds', type: 'CommaDelimitedList'
     ComponentParam 'JenkinsUrl'
+    ComponentParam 'JenkinsUser'
   end
 
   LambdaFunctions 'repository_seeder_custom_resources'

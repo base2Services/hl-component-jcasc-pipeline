@@ -99,7 +99,7 @@ CloudFormation do
         },
         {
           Name: 'JENKINS_API_USER',
-          Value: 'admin',
+          Value: Ref(:JenkinsUser)
         },
         {
           Name: 'JENKINS_API_PASSWORD',
