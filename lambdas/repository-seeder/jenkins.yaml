@@ -1,3 +1,4 @@
+---
 jenkins:
   agentProtocols:
     - "JNLP4-connect"
@@ -10,14 +11,13 @@ jenkins:
       excludeClientIPFromCrumb: false
   disableRememberMe: false
   globalNodeProperties:
-  systemMessage: Welcome to Ci In A Box 2.0!
+  systemMessage: <h2>Welcome to CI In A Box 2.0!</h2>
   numExecutors: 0
   markupFormatter:
     rawHtml:
       disableSyntaxHighlighting: true
   mode: NORMAL
   myViewsTabBar: "standard"
-  numExecutors: 2
   primaryView:
     all:
       name: "all"
@@ -35,30 +35,31 @@ jenkins:
       allowsSignup: false
       enableCaptcha: false
       users:
-      - id: "admin"
-        password: "admin"
+        - id: "admin"
+          password: "admin"
   slaveAgentPort: 50000
   updateCenter:
     sites:
-    - id: "cap-cloudbees-jenkins-distribution"
-      url: "https://jenkins-updates.cloudbees.com/update-center/envelope-cloudbees-jenkins-distribution/update-center.json"
-    - id: "cloudbees-jenkins-distribution-offline"
-      url: "file:/var/cloudbees-jenkins-distribution/war/WEB-INF/plugins/update-center.json"
+      - id: "cap-cloudbees-jenkins-distribution"
+        url: "https://jenkins-updates.cloudbees.com/update-center/envelope-cloudbees-jenkins-distribution/update-center.json"
+      - id: "cloudbees-jenkins-distribution-offline"
+        url: "file:/var/cloudbees-jenkins-distribution/war/WEB-INF/plugins/update-center.json"
   views:
-  - list:
-      columns:
-      - "status"
-      - "weather"
-      - "jobName"
-      - "lastSuccess"
-      - "deployNowColumn"
-      - "favoriteColumn"
-      - "lastBuildPromotionStatusColumn"
+    - list:
+        columns:
+          - "status"
+          - "weather"
+          - "jobName"
+          - "lastSuccess"
+          - "deployNowColumn"
+          - "favoriteColumn"
+          - "lastBuildPromotionStatusColumn"
       includeRegex: ".*"
       name: "My View 2"
-  - all:
-      name: "all"
+    - all:
+        name: "all"
   viewsTabBar: "standard"
+
 security:
   apiToken:
     creationOfLegacyTokenEnabled: false
@@ -68,3 +69,23 @@ security:
     useBrowser: false
   sSHD:
     port: 1234
+
+unclassified:
+  globalLibraries:
+    libraries:
+      - defaultVersion: "master"
+        name: "ciinabox"
+        retriever:
+          modernSCM:
+            scm:
+              github:
+                repoOwner: "base2services"
+                repository: "ciinabox-pipelines"
+                traits:
+                  - gitHubBranchDiscovery:
+                      strategyId: 1
+                  - originPullRequestDiscoveryTrait:
+                      strategyId: 1
+                  - gitHubForkDiscovery:
+                      strategyId: 1
+                      trust: "gitHubTrustPermissions"
