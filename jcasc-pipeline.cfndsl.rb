@@ -95,7 +95,7 @@ CloudFormation do
         },
         {
           Name: 'JENKINS_URL',
-          Value: FnSub("${JenkinsUrl}")
+          Value: Ref(:JenkinsUrl)
         },
         {
           Name: 'JENKINS_API_USER',
