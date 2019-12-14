@@ -12,7 +12,8 @@ buildspec:
       commands:
         - "yamllint -d '{extends: default, rules: {indentation: {indent-sequences: false},line-length: {allow-non-breakable-inline-mappings: true}}}' jenkins.yaml"
         - aws s3 cp jenkins.yaml s3://${BUCKET}/${ENVIRONMENT_NAME}/jenkins.yaml
-        - curl -X POST -u $JENKINS_API_USER:$JENKINS_API_PASSWORD "${JENKINS_URL}/configuration-as-code/reload"
+        - CRUMB=$(curl -b cookies.txt -c cookies.txt -s -u $JENKINS_API_USER:$JENKINS_API_PASSWORD $JENKINS_URL/crumbIssuer/api/json | jq -r '.crumbRequestField + ":" + .crumb')
+        - curl -b cookies.txt -c cookies.txt -X POST -s -u $JENKINS_API_USER:$JENKINS_API_PASSWORD -H "$CRUMB" $JENKINS_URL/configuration-as-code/reload
 
 trigger_iam_policies:
   CloudWatchEventPolicy:
