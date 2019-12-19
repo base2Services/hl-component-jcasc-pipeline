@@ -37,21 +37,24 @@ def commit_default_jcacs(event):
             authorName='ciinabox',
             email='ciinabox@base2services.com',
             commitMessage='initial jcasc commit',
-            putFiles=load_files()
+            putFiles=load_files(client.meta.region_name)
         )
     except client.exceptions.ParentCommitIdRequiredException as e:
         logger.error('repo already contains a commit')
 
-def load_files():
+def load_files(region):
     put_files = []
-    for file in FILES:
-        with open(file,'rb') as f:
+    for filename in FILES:
+        with open(filename,'r') as file:
+            fileContent = file.read()
+            fileContent = fileContent.replace('{{ciinabox::region}}', region)
             put_files.append({
-                'filePath': file,
+                'filePath': filename,
                 'fileMode': 'NORMAL',
-                'fileContent': f.read(),
+                'fileContent': str.encode(fileContent)
             })
     return put_files
+
 
 def lambda_handler(event, context):
     helper(event, context)

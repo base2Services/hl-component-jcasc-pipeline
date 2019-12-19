@@ -9,6 +9,48 @@ jenkins:
   crumbIssuer:
     standard:
       excludeClientIPFromCrumb: false
+  clouds: 
+  - amazonEC2: 
+      cloudName: "linux"
+      instanceCapStr: "1" 
+      privateKey: "${/ciinabox/keypair/reference}"
+      region: "{{ciinabox::region}}"
+      templates:
+      - ami: "${/ciinabox/reference/agent/linux/ami}"
+        amiType:
+          unixData:
+            sshPort: "22"
+        associatePublicIp: false
+        connectBySSHProcess: false
+        connectionStrategy: PRIVATE_IP
+        deleteRootOnTermination: true
+        description: "Linux Agent"
+        ebsOptimized: false
+        iamInstanceProfile: "${/ciinabox/reference/agent/iam}"
+        idleTerminationMinutes: "30"
+        instanceCapStr: "2"
+        labelString: "linux docker"
+        launchTimeoutStr: "300"
+        maxTotalUses: -1
+        minimumNumberOfInstances: 0
+        mode: EXCLUSIVE
+        monitoring: false
+        numExecutors: 8
+        remoteAdmin: "ec2-user"
+        remoteFS: "/home/ec2-user"
+        securityGroups: "${/ciinabox/reference/agent/securitygroup}"
+        spotConfig:
+          fallbackToOndemand: true
+        stopOnTerminate: false
+        subnetId: "${/ciinabox/reference/agent/subnets}"
+        t2Unlimited: false
+        tags:
+        - name: "Name"
+          value: "ciianbox-agent-linux"
+        type: T3Nano
+        useDedicatedTenancy: false
+        useEphemeralDevices: false
+      useInstanceProfileForCredentials: false
   disableRememberMe: false
   globalNodeProperties:
   systemMessage: <h2>Welcome to CI In A Box 2.0!</h2>
