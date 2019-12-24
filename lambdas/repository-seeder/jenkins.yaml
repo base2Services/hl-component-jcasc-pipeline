@@ -9,10 +9,10 @@ jenkins:
   crumbIssuer:
     standard:
       excludeClientIPFromCrumb: false
-  clouds: 
-  - amazonEC2: 
+  clouds:
+  - amazonEC2:
       cloudName: "linux"
-      instanceCapStr: "1" 
+      instanceCapStr: "1"
       privateKey: "${/ciinabox/keypair/reference}"
       region: "{{ciinabox::region}}"
       templates:
