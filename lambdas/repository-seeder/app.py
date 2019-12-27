@@ -37,17 +37,18 @@ def commit_default_jcacs(event):
             authorName='ciinabox',
             email='ciinabox@base2services.com',
             commitMessage='initial jcasc commit',
-            putFiles=load_files(client.meta.region_name)
+            putFiles=load_files(client.meta.region_name,event['ResourceProperties']['JenkinsUrl'])
         )
     except client.exceptions.ParentCommitIdRequiredException as e:
         logger.error('repo already contains a commit')
 
-def load_files(region):
+def load_files(region,url):
     put_files = []
     for filename in FILES:
         with open(filename,'r') as file:
             fileContent = file.read()
             fileContent = fileContent.replace('{{ciinabox::region}}', region)
+            fileContent = fileContent.replace('{{ciinabox::url}}', url)
             put_files.append({
                 'filePath': filename,
                 'fileMode': 'NORMAL',

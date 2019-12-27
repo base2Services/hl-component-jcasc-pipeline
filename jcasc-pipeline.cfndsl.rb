@@ -171,6 +171,7 @@ CloudFormation do
     Type "Custom::SeedRepository"
     Property('ServiceToken', FnGetAtt(:RepositorySeederCR, :Arn))
     Property('RepositoryName', FnGetAtt(:Repository, :Name))
+    Property('JenkinsUrl', Ref(:JenkinsUrl))
   }
   
   Output(:FileLocation) {
