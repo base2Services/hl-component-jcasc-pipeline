@@ -2,15 +2,17 @@ require 'yaml'
 
 CloudFormation do
   
+  tags = external_parameters.fetch(:tags, {})
+  
   jcasc_tags = []
-  jcasc_tags.push({ Key: 'Name', Value: FnSub("${EnvironmentName}-#{component_name}") })
+  jcasc_tags.push({ Key: 'Name', Value: FnSub("${EnvironmentName}-#{external_parameters[:component_name]}") })
   jcasc_tags.push({ Key: 'EnvironmentName', Value: Ref(:EnvironmentName) })
   jcasc_tags.push({ Key: 'EnvironmentType', Value: Ref(:EnvironmentType) })
-  jcasc_tags.push(*tags.map {|k,v| {Key: k, Value: FnSub(v)}}).uniq { |h| h[:Key] } if defined? tags
+  jcasc_tags.push(*tags.map {|k,v| {Key: k, Value: FnSub(v)}}).uniq { |h| h[:Key] }
   
   S3_Bucket(:Bucket) {
     DeletionPolicy 'Retain'
-    BucketName FnSub(bucket_name)
+    BucketName FnSub(external_parameters[:bucket_name])
   }
   
   bucket_policy = {
@@ -39,7 +41,7 @@ CloudFormation do
   IAM_Role(:CodeBuildRole) {
     Path '/'
     AssumeRolePolicyDocument service_assume_role_policy('codebuild')
-    Policies iam_role_policies(codebuild_iam_policies)
+    Policies iam_role_policies(external_parameters[:codebuild_iam_policies])
   }
   
   Logs_LogGroup(:Logs) {
@@ -77,7 +79,7 @@ CloudFormation do
     Source({
       Type: 'CODECOMMIT',
       Location: FnGetAtt(:Repository, :CloneUrlHttp),
-      BuildSpec: buildspec.to_yaml
+      BuildSpec: external_parameters[:buildspec].to_yaml
     })
     Environment({
       ComputeType: 'BUILD_GENERAL1_SMALL',
@@ -116,7 +118,7 @@ CloudFormation do
   IAM_Role(:TriggerRole) {
     Path '/'
     AssumeRolePolicyDocument service_assume_role_policy('events')
-    Policies iam_role_policies(trigger_iam_policies)
+    Policies iam_role_policies(external_parameters[:trigger_iam_policies])
   }
   
   Events_Rule(:Trigger) {
