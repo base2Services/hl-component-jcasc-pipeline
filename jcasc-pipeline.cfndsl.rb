@@ -97,7 +97,7 @@ CloudFormation do
         },
         {
           Name: 'JENKINS_URL',
-          Value: Ref(:JenkinsUrl)
+          Value: Ref(:JenkinsInternalUrl)
         },
         {
           Name: 'JENKINS_API_USER',
@@ -173,7 +173,7 @@ CloudFormation do
     Type "Custom::SeedRepository"
     Property('ServiceToken', FnGetAtt(:RepositorySeederCR, :Arn))
     Property('RepositoryName', FnGetAtt(:Repository, :Name))
-    Property('JenkinsUrl', Ref(:JenkinsUrl))
+    Property('JenkinsUrl', Ref(:JenkinsExternalUrl))
   }
   
   Output(:FileLocation) {

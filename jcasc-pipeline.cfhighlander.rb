@@ -10,7 +10,8 @@ CfhighlanderTemplate do
     ComponentParam 'VPC', type: 'AWS::EC2::VPC::Id'
     ComponentParam 'VPCEndpointId'
     ComponentParam 'SubnetIds', type: 'CommaDelimitedList'
-    ComponentParam 'JenkinsUrl'
+    ComponentParam 'JenkinsInternalUrl'
+    ComponentParam 'JenkinsExternalUrl'
     ComponentParam 'JenkinsUser'
   end
 
