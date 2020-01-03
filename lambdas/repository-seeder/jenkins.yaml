@@ -13,10 +13,10 @@ jenkins:
   - amazonEC2:
       cloudName: "linux"
       instanceCapStr: "1"
-      privateKey: "${/ciinabox/keypair/reference}"
+      privateKey: "${/ciinabox/keypair/{{ciinabox::name}}}"
       region: "{{ciinabox::region}}"
       templates:
-      - ami: "${/ciinabox/reference/agent/linux/ami}"
+      - ami: "${/ciinabox/{{ciinabox::name}}/agent/linux/ami}"
         amiType:
           unixData:
             sshPort: "22"
@@ -26,7 +26,7 @@ jenkins:
         deleteRootOnTermination: true
         description: "Linux Agent"
         ebsOptimized: false
-        iamInstanceProfile: "${/ciinabox/reference/agent/iam}"
+        iamInstanceProfile: "${/ciinabox/{{ciinabox::name}}/agent/iam}"
         idleTerminationMinutes: "30"
         instanceCapStr: "2"
         labelString: "linux docker"
@@ -38,11 +38,11 @@ jenkins:
         numExecutors: 8
         remoteAdmin: "ec2-user"
         remoteFS: "/home/ec2-user"
-        securityGroups: "${/ciinabox/reference/agent/securitygroup}"
+        securityGroups: "${/ciinabox/{{ciinabox::name}}/agent/securitygroup}"
         spotConfig:
           fallbackToOndemand: true
         stopOnTerminate: false
-        subnetId: "${/ciinabox/reference/agent/subnets}"
+        subnetId: "${/ciinabox/{{ciinabox::name}}/agent/subnets}"
         t2Unlimited: false
         tags:
         - name: "Name"

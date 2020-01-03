@@ -172,6 +172,7 @@ CloudFormation do
     DependsOn [:Build,:Trigger]
     Type "Custom::SeedRepository"
     Property('ServiceToken', FnGetAtt(:RepositorySeederCR, :Arn))
+    Property('CiinaboxName', Ref(:EnvironmentName))
     Property('RepositoryName', FnGetAtt(:Repository, :Name))
     Property('JenkinsUrl', Ref(:JenkinsExternalUrl))
   }
