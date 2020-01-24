@@ -39,8 +39,9 @@ def commit_default_jcacs(event):
             commitMessage='initial jcasc commit',
             putFiles=load_files(
                 client.meta.region_name,
-                event['ResourceProperties']['JenkinsUrl'])
-                event['ResourceProperties']['CiinaboxName'])
+                event['ResourceProperties']['JenkinsUrl'],
+                event['ResourceProperties']['CiinaboxName']
+            )
         )
     except client.exceptions.ParentCommitIdRequiredException as e:
         logger.error('repo already contains a commit')
