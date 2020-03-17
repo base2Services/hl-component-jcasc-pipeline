@@ -115,7 +115,7 @@ unclassified:
               traits:
               - gitHubBranchDiscovery:
                   strategyId: 1
-              - originPullRequestDiscoveryTrait:
+              - gitHubPullRequestDiscovery:
                   strategyId: 1
               - gitHubForkDiscovery:
                   strategyId: 1
