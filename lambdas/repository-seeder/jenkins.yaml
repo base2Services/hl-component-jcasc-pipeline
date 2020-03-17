@@ -33,7 +33,7 @@ jenkins:
         launchTimeoutStr: "300"
         maxTotalUses: -1
         minimumNumberOfInstances: 0
-        mode: EXCLUSIVE
+        mode: NORMAL
         monitoring: false
         numExecutors: 8
         remoteAdmin: "ec2-user"
