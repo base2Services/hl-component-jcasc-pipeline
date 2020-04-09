@@ -7,7 +7,7 @@ buildspec:
       runtime-versions:
         python: 3.8
       commands:
-        - pip install --user yamllint
+        - pip install yamllint
     build:
       commands:
         - "yamllint -d '{extends: default, rules: {indentation: {indent-sequences: false},line-length: {max: 200, allow-non-breakable-words: true, allow-non-breakable-inline-mappings: true}}}' jenkins.yaml"
