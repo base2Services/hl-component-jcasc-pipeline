@@ -26,6 +26,7 @@ jenkins:
         deleteRootOnTermination: true
         description: "Linux Agent"
         ebsOptimized: false
+        hostKeyVerificationStrategy: 'OFF'
         iamInstanceProfile: "${/ciinabox/{{ciinabox::name}}/agent/iam}"
         idleTerminationMinutes: "30"
         instanceCapStr: "2"
