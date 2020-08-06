@@ -90,8 +90,6 @@ security:
   sSHD:
     port: -1
 unclassified:
-  contentFilters:
-    enabled: false
   experimentalPlugins:
     enabled: false
   location:
