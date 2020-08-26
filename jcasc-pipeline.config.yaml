@@ -18,9 +18,9 @@ buildspec:
 trigger_iam_policies:
   CloudWatchEventPolicy:
     action:
-      - codebuild:StartBuild
+      - codepipeline:StartPipelineExecution
     resource:
-      - Fn::GetAtt: [Build,Arn]
+      - Fn::Sub: aws:arn:codepipeline:${AWS::Region}:${AWS::AccountId}:${Pipeline}
 
 codebuild_iam_policies:
   logs:
@@ -40,11 +40,6 @@ codebuild_iam_policies:
       - s3:GetBucketLocation
     resource:
       - Fn::Sub: arn:aws:s3:::${Bucket}
-  git-pull:
-    action:
-      - codecommit:GitPull
-    resource:
-      - Fn::GetAtt: Repository.Arn
   vpc-access:
     action:
       - ec2:CreateNetworkInterface
@@ -60,7 +55,30 @@ codebuild_iam_policies:
       - secretsmanager:GetSecretValue
     resource:
       - Ref: JenkinsSecret
-      
+
+codepipeline_iam_policies:
+  codecommit:
+    action:
+      - codecommit:GetBranch
+      - codecommit:GetCommit
+      - codecommit:UploadArchive
+      - codecommit:GetUploadArchiveStatus
+      - codecommit:CancelUploadArchive
+    resource:
+      - Fn::GetAtt: Repository.Arn
+  codebuild:
+    action:
+      - codebuild:BatchGetBuilds
+      - codebuild:StartBuild
+    resource:
+      - Fn::GetAtt: Build.Arn
+  s3:
+    action:
+      - s3:GetObject
+      - s3:PutObject
+    resource:
+      - Fn::Sub: arn:aws:s3:::${Bucket}
+
 repository_seeder_custom_resources:
   custom_policies:
     codecommit:

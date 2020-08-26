@@ -43,6 +43,12 @@ CloudFormation do
     AssumeRolePolicyDocument service_assume_role_policy('codebuild')
     Policies iam_role_policies(external_parameters[:codebuild_iam_policies])
   }
+
+  IAM_Role(:CodePipelineRole) {
+    Path '/'
+    AssumeRolePolicyDocument service_assume_role_policy('codepipeline')
+    Policies iam_role_policies(external_parameters[:codepipeline_iam_policies])
+  }
   
   Logs_LogGroup(:Logs) {
     LogGroupName FnSub("/${EnvironmentName}/codebuild/jcasc")
@@ -59,6 +65,58 @@ CloudFormation do
     RepositoryDescription 'Jenkins configuration as code plugin source'
     RepositoryName FnSub("${EnvironmentName}-jcasc")
     Tags jcasc_tags
+  }
+
+  CodePipeline_Pipeline(:Pipeline) {
+    Name FnSub("${EnvironmentName}-jcasc")
+    RoleArn FnGetAtt(:CodePipelineRole, :Arn)
+    ArtifactStore({
+      Type: 'S3',
+      Location: Ref('Bucket')
+    })
+    Stages([
+      {
+        Name: 'Source',
+        Actions: [
+          {
+            Name: 'CodeCommit',
+            ActionTypeId: {
+              Category: 'Source',
+              Provider: 'CodeCommit',
+              Version: 1,
+              Owner: 'AWS'
+            },
+            OutputArtifacts: [
+              { Name: 'Source' }
+            ],
+            Configuration: {
+              RepositoryName: FnSub("${EnvironmentName}-jcasc"),
+              BranchName: 'master'
+            }
+          }
+        ]
+      },
+      {
+        Name: 'Update Jenkins Configuration',
+        Actions: [
+          {
+            Name: 'Build',
+            ActionTypeId: {
+              Category: 'Build',
+              Provider: 'CodeBuild',
+              Owner: 'AWS',
+              Version: 1
+            },
+            InputArtifacts: [
+              { Name: 'Source' }
+            ],
+            Configuration: {
+              ProjectName: Ref('Build')
+            }
+          }
+        ]
+      }
+    ])
   }
   
   CodeBuild_Project(:Build) {
@@ -147,9 +205,9 @@ CloudFormation do
     })
     Targets([
         {
-          Arn: FnSub("arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/${Build}"),
+          Arn: FnSub("aws:arn:codepipeline:${AWS::Region}:${AWS::AccountId}:${Pipeline}"),
           RoleArn: FnGetAtt(:TriggerRole, :Arn),
-          Id: 'jcasc-codebuild-trigger'
+          Id: 'jcasc-codepipeline-trigger'
         }
     ])
   }
