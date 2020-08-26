@@ -20,7 +20,7 @@ trigger_iam_policies:
     action:
       - codepipeline:StartPipelineExecution
     resource:
-      - Fn::Sub: aws:arn:codepipeline:${AWS::Region}:${AWS::AccountId}:${Pipeline}
+      - Fn::Sub: arn:aws:codepipeline:${AWS::Region}:${AWS::AccountId}:${Pipeline}
 
 codebuild_iam_policies:
   logs:

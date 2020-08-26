@@ -205,7 +205,7 @@ CloudFormation do
     })
     Targets([
         {
-          Arn: FnSub("aws:arn:codepipeline:${AWS::Region}:${AWS::AccountId}:${Pipeline}"),
+          Arn: FnSub("arn:aws:codepipeline:${AWS::Region}:${AWS::AccountId}:${Pipeline}"),
           RoleArn: FnGetAtt(:TriggerRole, :Arn),
           Id: 'jcasc-codepipeline-trigger'
         }
