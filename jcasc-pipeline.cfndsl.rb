@@ -97,7 +97,7 @@ CloudFormation do
         ]
       },
       {
-        Name: 'Update Jenkins Configuration',
+        Name: 'UpdateJenkinsConfiguration',
         Actions: [
           {
             Name: 'Build',
