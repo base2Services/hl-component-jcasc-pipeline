@@ -1,4 +1,4 @@
-bucket_name: jcasc.${EnvironmentName}.${AWS::Region}.${AWS::AccountId}
+bucket_name: jcasc-${EnvironmentName}-${AWS::Region}-${AWS::AccountId}
 
 buildspec:
   version: 0.2
