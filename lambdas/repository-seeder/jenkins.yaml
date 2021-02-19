@@ -13,7 +13,7 @@ jenkins:
   - amazonEC2:
       cloudName: "linux"
       instanceCapStr: "1"
-      privateKey: "${/ciinabox/keypair/{{ciinabox::name}}}"
+      sshKeysCredentialsId: ciinabox-agent-key
       region: "{{ciinabox::region}}"
       templates:
       - ami: "${/ciinabox/{{ciinabox::name}}/agent/linux/ami}"
@@ -83,6 +83,18 @@ jenkins:
   - all:
       name: "all"
   viewsTabBar: "standard"
+credentials:
+  system:
+    domainCredentials:
+    - credentials:
+      - basicSSHUserPrivateKey:
+          id: ciinabox-agent-key
+          scope: GLOBAL
+          description: ciinabox agent keypair
+          username: ec2-user
+          privateKeySource:
+            directEntry:
+              privateKey: "${/ciinabox/keypair/{{ciinabox::name}}}"
 security:
   apiToken:
     creationOfLegacyTokenEnabled: false
