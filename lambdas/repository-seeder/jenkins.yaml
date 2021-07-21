@@ -49,7 +49,6 @@ jenkins:
         - name: "Name"
           value: "ciianbox-agent-linux"
         type: T3Nano
-        useDedicatedTenancy: false
         useEphemeralDevices: false
       useInstanceProfileForCredentials: false
   disableRememberMe: false
@@ -73,12 +72,6 @@ jenkins:
       allowsSignup: false
       enableCaptcha: false
   slaveAgentPort: 50000
-  updateCenter:
-    sites:
-    - id: "cloudbees-jenkins-distribution-offline"
-      url: "file:/var/cloudbees-jenkins-distribution/war/WEB-INF/plugins/update-center.json"
-    - id: "cap-cloudbees-jenkins-distribution"
-      url: "https://jenkins-updates.cloudbees.com/update-center/envelope-cloudbees-jenkins-distribution/update-center.json"
   views:
   - all:
       name: "all"
@@ -103,14 +96,9 @@ security:
   sSHD:
     port: -1
 unclassified:
-  experimentalPlugins:
-    enabled: false
   location:
     adminAddress: "ciinabox@base2services.com"
     url: "{{ciinabox::url}}"
-  mailer:
-    charset: "UTF-8"
-    useSsl: false
   pollSCM:
     pollingThreadCount: 10
   globalLibraries:
