@@ -159,7 +159,7 @@ CloudFormation do
         },
         {
           Name: 'JCASC_RELOAD_TOKEN',
-          Value: FnSub("/${EnvironmentName}/jenkins/jcasc-reload-token"),
+          Value: FnSub("/${EnvironmentName}/jenkins/jcasc/reload-token"),
           Type: 'SECRETS_MANAGER'
         }
       ]
