@@ -49,7 +49,7 @@ codebuild_iam_policies:
     action:
       - secretsmanager:GetSecretValue
     resource:
-      - Ref: JenkinsSecret
+      - Ref: JcascReloadToken
 
 codepipeline_iam_policies:
   codecommit:
