@@ -224,7 +224,7 @@ CloudFormation do
       ExcludePunctuation: true,
       PasswordLength: 32
     })
-    Name FnSub("/${EnvironmentName}/jenkins/jcasc-reload-token")
+    Name FnSub("/${EnvironmentName}/jenkins/jcasc/reload-token")
     Tags jcasc_tags
   }
   
