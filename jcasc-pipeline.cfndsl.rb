@@ -218,7 +218,7 @@ CloudFormation do
     Tags jcasc_tags
   }
 
-  SecretsManager_Secret(:JenkinsSecret) {
+  SecretsManager_Secret(:JcascReloadToken) {
     Description FnSub("${EnvironmentName} Jenkins auto generated jcasc reload token")
     GenerateSecretString ({
       ExcludePunctuation: true,
