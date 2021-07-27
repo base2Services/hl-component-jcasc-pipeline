@@ -141,7 +141,7 @@ CloudFormation do
     })
     Environment({
       ComputeType: 'BUILD_GENERAL1_SMALL',
-      Image: 'aws/codebuild/amazonlinux2-x86_64-standard:2.0',
+      Image: "#{external_parameters[:image]}:#{external_parameters[:tag]}",
       Type: 'LINUX_CONTAINER',
       ImagePullCredentialsType: 'CODEBUILD',
       EnvironmentVariables: [
@@ -158,12 +158,8 @@ CloudFormation do
           Value: Ref(:JenkinsInternalUrl)
         },
         {
-          Name: 'JENKINS_API_USER',
-          Value: Ref(:JenkinsUser)
-        },
-        {
-          Name: 'JENKINS_API_PASSWORD',
-          Value: FnSub("/${EnvironmentName}/jenkins/admin/password"),
+          Name: 'JCASC_RELOAD_TOKEN',
+          Value: FnSub("/${EnvironmentName}/jenkins/jcasc-reload-token"),
           Type: 'SECRETS_MANAGER'
         }
       ]
@@ -219,6 +215,16 @@ CloudFormation do
       PasswordLength: 32
     })
     Name FnSub("/${EnvironmentName}/jenkins/admin/password")
+    Tags jcasc_tags
+  }
+
+  SecretsManager_Secret(:JenkinsSecret) {
+    Description FnSub("${EnvironmentName} Jenkins auto generated jcasc reload token")
+    GenerateSecretString ({
+      ExcludePunctuation: true,
+      PasswordLength: 32
+    })
+    Name FnSub("/${EnvironmentName}/jenkins/jcasc-reload-token")
     Tags jcasc_tags
   }
   

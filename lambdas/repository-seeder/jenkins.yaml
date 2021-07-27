@@ -1,14 +1,5 @@
 ---
 jenkins:
-  agentProtocols:
-  - "JNLP4-connect"
-  - "Ping"
-  authorizationStrategy:
-    loggedInUsersCanDoAnything:
-      allowAnonymousRead: false
-  crumbIssuer:
-    standard:
-      excludeClientIPFromCrumb: false
   clouds:
   - amazonEC2:
       cloudName: "linux"
@@ -51,31 +42,6 @@ jenkins:
         type: T3Nano
         useEphemeralDevices: false
       useInstanceProfileForCredentials: false
-  disableRememberMe: false
-  systemMessage: <h2>Welcome to CI In A Box 2.0!</h2>
-  markupFormatter:
-    rawHtml:
-      disableSyntaxHighlighting: true
-  mode: NORMAL
-  myViewsTabBar: "standard"
-  numExecutors: 0
-  primaryView:
-    all:
-      name: "all"
-  projectNamingStrategy: "standard"
-  quietPeriod: 5
-  remotingSecurity:
-    enabled: true
-  scmCheckoutRetryCount: 0
-  securityRealm:
-    local:
-      allowsSignup: false
-      enableCaptcha: false
-  slaveAgentPort: 50000
-  views:
-  - all:
-      name: "all"
-  viewsTabBar: "standard"
 credentials:
   system:
     domainCredentials:
@@ -88,19 +54,9 @@ credentials:
           privateKeySource:
             directEntry:
               privateKey: "${/ciinabox/keypair/{{ciinabox::name}}}"
-security:
-  apiToken:
-    creationOfLegacyTokenEnabled: false
-    tokenGenerationOnCreationEnabled: false
-    usageStatisticsEnabled: true
-  sSHD:
-    port: -1
 unclassified:
   location:
-    adminAddress: "ciinabox@base2services.com"
     url: "{{ciinabox::url}}"
-  pollSCM:
-    pollingThreadCount: 10
   globalLibraries:
     libraries:
     - defaultVersion: "master"

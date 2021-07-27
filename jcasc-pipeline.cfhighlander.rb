@@ -12,7 +12,6 @@ CfhighlanderTemplate do
     ComponentParam 'SubnetIds', type: 'CommaDelimitedList'
     ComponentParam 'JenkinsInternalUrl'
     ComponentParam 'JenkinsExternalUrl'
-    ComponentParam 'JenkinsUser'
   end
 
   LambdaFunctions 'repository_seeder_custom_resources'
