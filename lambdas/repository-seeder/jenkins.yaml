@@ -38,7 +38,7 @@ jenkins:
         t2Unlimited: false
         tags:
         - name: "Name"
-          value: "ciianbox-agent-linux"
+          value: "ciinabox-agent-linux"
         type: T3Nano
         useEphemeralDevices: false
       useInstanceProfileForCredentials: false
