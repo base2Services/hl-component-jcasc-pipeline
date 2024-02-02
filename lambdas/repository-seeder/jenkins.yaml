@@ -2,7 +2,7 @@
 jenkins:
   clouds:
   - amazonEC2:
-      cloudName: "linux"
+      name: "linux"
       instanceCapStr: "1"
       sshKeysCredentialsId: ciinabox-agent-key
       region: "{{ciinabox::region}}"
